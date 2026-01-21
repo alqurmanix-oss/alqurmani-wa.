@@ -1,9 +1,14 @@
 {
-  "name": "alqurmani-wa",
+  "name": "alqurmani-x-system",
   "version": "1.0.0",
-  "scripts": { "start": "node index.js" },
+  "description": "Alqurmani X Operations Center",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "whatsapp-web.js": "^1.23.0",
-    "qrcode-terminal": "^0.12.0"
+    "@vonage/server-sdk": "^3.11.0",
+    "google-spreadsheet": "^4.1.1",
+    "google-auth-library": "^9.4.1"
   }
 }
