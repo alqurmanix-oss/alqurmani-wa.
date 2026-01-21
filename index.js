@@ -2,13 +2,13 @@ const { Vonage } = require('@vonage/server-sdk');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 
-// 1. إعدادات الإرسال (أرقامك ومفاتيحك جاهزة)
+// 1. إعدادات إرسال الرسائل (بياناتك جاهزة)
 const vonage = new Vonage({
   apiKey: "709289da",
   apiSecret: "qWoTUY4uppYZOwQEwvqKu07p9H7RZ8jCwdmo0ukDN4ypYygpn8"
 });
 
-// 2. إعدادات الوصول لجوجل شيت (كاملة بالمفتاح)
+// 2. مفتاح الدخول لجدول جوجل (مدمج بالكامل)
 const serviceAccountAuth = new JWT({
   email: 'alqurmani-bot@alqurmani-x.iam.gserviceaccount.com',
   key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCbkcwggZjAgEAAoIBAQC78fGk0Q1l7vWq\n9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w\n9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w\n9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w\n-----END PRIVATE KEY-----\n", 
@@ -17,34 +17,31 @@ const serviceAccountAuth = new JWT({
 
 const doc = new GoogleSpreadsheet('1TFK2GIOvYguI5-lxicQHueeQ7DOzP_bZtsbf6pbcmlc', serviceAccountAuth);
 
-// 3. الوظيفة اللي هتملا الـ 20 بند
-async function startOperation() {
+// 3. أمر تنفيذ الإرسال والتسجيل في الجدول
+async function startSystem() {
     try {
-        console.log("🚀 جاري التنفيذ...");
+        console.log("🚀 جاري البدء...");
         
-        // إرسال الرسالة لرقمك
+        // إرسال SMS لرقمك
         await vonage.sms.send({
             to: "201027834695", 
             from: "AlqurmaniX", 
-            text: "تم تفعيل نظام القرماني إكس بنجاح يا إمبراطور! 👑"
+            text: "نظام القرماني إكس يعمل الآن بنجاح! 👑"
         });
         
-        // تسجيل البيانات في الجدول
+        // الكتابة في الجدول
         await doc.loadInfo();
         const sheet = doc.sheetsByIndex[0];
         await sheet.addRow({
             'الرقم': "201027834695",
-            'الحالة': "نشط",
             'التوقيت': new Date().toLocaleString('ar-EG'),
-            'المبلغ': "0",
-            'الرسالة': "تم التفعيل بنجاح"
+            'الحالة': "تم التشغيل بنجاح"
         });
         
-        console.log("✅ مبروك! العملية تمت والجدول اتملى.");
-    } catch (error) {
-        console.error("❌ حصلت مشكلة:", error.message);
+        console.log("✅ اكتملت العملية بنجاح!");
+    } catch (e) {
+        console.error("❌ خطأ:", e.message);
     }
 }
 
-// شغل العملية فوراً
-startOperation();
+startSystem();
