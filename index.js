@@ -4,41 +4,42 @@ const { JWT } = require('google-auth-library');
 
 // 1. مفاتيح Vonage (المحرك)
 const vonage = new Vonage({
-  apiKey: "709289da", // الـ Key بتاعك
-  apiSecret: "qWoTUY4uppYZOwQEwvqKu07p9H7RZ8jCwdmo0ukDN4ypYygpn8" // الـ Secret بتاعك
+  apiKey: "709289da",
+  apiSecret: "qWoTUY4uppYZOwQEwvqKu07p9H7RZ8jCwdmo0ukDN4ypYygpn8"
 });
 
-// 2. إعدادات جوجل شيت (المخزن)
+// 2. إعدادات جوجل شيت (المخزن الإمبراطوري)
 const serviceAccountAuth = new JWT({
   email: 'alqurmani-bot@alqurmani-x.iam.gserviceaccount.com',
-  key: 'هنا سنضع المفتاح السري لجوجل لاحقاً', 
+  key: 'سأرسل لك مفتاح جوجل السري في الخطوة القادمة', 
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 
-const doc = new GoogleSpreadsheet('معرف_الجدول_الخاص_بك', serviceAccountAuth);
+const doc = new GoogleSpreadsheet('1TFK2GIOvYguI5-lxicQHueeQ7DOzP_bZtsbf6pbcmlc', serviceAccountAuth);
 
-// وظيفة السيطرة الشاملة (إرسال وتسجيل)
-async function executeOperation(phone, message, amount) {
+// وظيفة تنفيذ العملية وتسجيل الـ 20 بند
+async function startOperation(phone, message, amount) {
     try {
-        // إرسال SMS
-        await vonage.sms.send({to: phone, from: "ALQURMANI", text: message});
+        console.log("جاري إرسال الرسالة...");
+        await vonage.sms.send({to: phone, from: "AlqurmaniX", text: message});
         
-        // تسجيل في الـ 20 بند
+        console.log("جاري تسجيل البيانات في الـ 20 بند...");
         await doc.loadInfo();
         const sheet = doc.sheetsByIndex[0];
         await sheet.addRow({
-            Timestamp: new Date().toLocaleString(),
-            Phone_Number: phone,
-            Action_Type: 'SMS',
-            Payment_Amount: amount,
-            Message_Content: message,
-            Subscription_Status: 'Active',
-            Security_Level: 'Green'
-            // باقي الـ 20 بند سيتم تعبئتها آلياً
+            'Timestamp': new Date().toLocaleString(),
+            'Phone_Number': phone,
+            'Action_Type': 'SMS',
+            'Payment_Amount': amount,
+            'Message_Content': message,
+            'Subscription_Status': 'Active',
+            'Security_Level': 'Green'
         });
-        console.log("تمت العملية وتسجيل البيانات بنجاح!");
-    } catch (e) { console.error("خطأ في العملية:", e); }
+        console.log("✅ تمت العملية بنجاح يا إمبراطور!");
+    } catch (e) {
+        console.error("❌ حدث خطأ:", e);
+    }
 }
 
-// تجربة التشغيل الأولى
-executeOperation('رقمك_هنا', 'مرحباً بك في إمبراطورية القرماني إكس', '0');
+// تجربة التشغيل (حط رقمك هنا للتجربة)
+startOperation('رقم_موبايلك_بالكود_الدولي', 'تم تفعيل نظام القرماني إكس بنجاح 🚀', '0');
