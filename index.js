@@ -1,7 +1,6 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 
-// 1. مفتاح الدخول لجدول جوجل
 const serviceAccountAuth = new JWT({
   email: 'alqurmani-bot@alqurmani-x.iam.gserviceaccount.com',
   key: "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCbkcwggZjAgEAAoIBAQC78fGk0Q1l7vWq\n9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w\n9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w\n9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w9zX2Y5G6zR5k6k8w\n-----END PRIVATE KEY-----\n", 
@@ -12,23 +11,19 @@ const doc = new GoogleSpreadsheet('1TFK2GIOvYguI5-lxicQHueeQ7DOzP_bZtsbf6pbcmlc'
 
 async function startSystem() {
     try {
-        console.log("🚀 جاري الاتصال المباشر بالجدول...");
-        
+        console.log("🚀 محاولة الكتابة الإمبراطورية...");
         await doc.loadInfo();
         const sheet = doc.sheetsByIndex[0];
         
-        // إضافة البيانات مباشرة للجدول
-        await sheet.addRow([
-            new Date().toLocaleString('ar-EG'), 
-            "201027834695", 
-            "تم الربط بنجاح (بدون رسائل)", 
-            "النظام الآن يعمل على الجدول فقط"
-        ]);
+        // مسح أي صفوف قديمة أو تجربة صف جديد تماماً
+        const row = await sheet.addRow({
+            'Timestamp': new Date().toLocaleString('ar-EG'),
+            'Phone_Number': "201027834695"
+        });
 
-        console.log("✅ العملية تمت! افتح الجدول الآن.");
+        console.log("✅ تم إرسال السطر لجوجل. تحقق من الجدول الآن!");
     } catch (e) {
-        console.error("❌ عطل في الجدول:", e.message);
+        console.error("❌ العطل الفني هو: ", e.message);
     }
 }
-
 startSystem();
